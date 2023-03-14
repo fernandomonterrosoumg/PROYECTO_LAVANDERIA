@@ -7,7 +7,7 @@ async function getConexion(pool) {
 
 async function getPool() {
     return await oracledb.createPool({
-        user: "fernando",
+        user: "lavanderia",
         password: "guatemala",
         //connectString: "(DESCRIPTION =(ADDRESS = (PROTOCOL = TCP)(HOST = DESKTRON)(PORT = 1521))(CONNECT_DATA =(SID= ORCLFERNANDO)))",
         connectString: "LOCALHOST:1521/orclfer",
