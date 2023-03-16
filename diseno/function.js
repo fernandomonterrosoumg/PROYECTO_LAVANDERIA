@@ -42,21 +42,104 @@ var vm = new Vue({
             }
         });
 
+		let uri = window.location.search.substring(1); 
+			let params = new URLSearchParams(uri);
+			this.id_coti= params.get("cotizacion_id");
+			if(this.id_coti!=null){
+				this.getCotizacion(this.id_coti);
+			}
+
 		
     },
 	data:{
+		id_coti:0,
 		declaraciones:[],
 		personas:[],
+		info_coti:{
+			"cliente":{},
+			"cotizacion":[]
+		},
 		cuenta:{
 			"id_tipo_cuenta":1,
 			"saldo":0,
 			"id_persona":0
-		}
+		},
+		cliente:  {
+			"apellido": "",
+			"nombre": "",
+			"calle": "",
+			"apartamento": "",
+			"piso": "",
+			"barrio": "",
+			"telefono": "0",
+			"nit": ""
+		},cotizacion:  {
+			"COTIZACION_ID": "",
+			"cotizacion_fecha": "",
+			"CANTIDAD_PRENDAS": 0,
+			"fecha_devolucion": "",
+			"PEDIDO_TOTAL": 0,
+			"id_cliente": "",
+			"info_cliente":{
+				"ID_CLIENTE":0,
+				"APELLIDO":"",
+				"NOMBRE":"",
+				"CALLE":"",
+				"APARTAMENTO":"",
+				"PISO":"",
+				"BARRIO":"",
+				"TELEFONO":"",
+				"NIT":""
+			},
+			det_coti:[]
+		},paramCoti:{
+			SER_PRE_ID:0,
+			SEV_TIPO_ID:0,
+			PRECIO:0,
+			TOTAL_NETO:0,
+			PIEZAS:0,
+			PRENDA_DESCRIPCION:"",
+		},
+		listaCoti:[],
+		noConsultarIDCoti:false,
 	},
 	watch:{
 		
 	},
     methods: {
+		nitIsValid(nit) {
+			if (!nit) {
+				return true;
+			}
+		
+			var nitRegExp = new RegExp('^[0-9]+(-?[0-9kK])?$');
+		
+			if (!nitRegExp.test(nit)) {
+				return false;
+			}
+		
+			//console.log(nit);
+			nit = nit.toString().replace(/-/, '');
+			var lastChar = nit.length - 1;
+			var number = nit.substring(0, lastChar);
+			var expectedCheker = nit.substring(lastChar, lastChar + 1).toLowerCase();
+		
+			var factor = number.length + 1;
+			var total = 0;
+		
+			for (var i = 0; i < number.length; i++) {
+				var character = number.substring(i, i + 1);
+				var digit = parseInt(character, 10);
+		
+				total += (digit * factor);
+				factor = factor - 1;
+			}
+		
+			var modulus = (11 - (total % 11)) % 11;
+			var computedChecker = (modulus == 10 ? "k" : modulus.toString());
+		
+			return expectedCheker === computedChecker;
+		},
 		onChangeTipo(event) {
 			var self = this;
             var tipo = event.target.value;
@@ -69,8 +152,99 @@ var vm = new Vue({
 				default:
 					break;
 			}
+        },print(id) {
+			var elemento = document.getElementById(id);
+			var contenido = elemento.innerHTML;
+			document.write('<html><head><title>Imprimir div</title></head><body>');
+			document.write(contenido);
+			document.write('</body></html>');
+			window.print();
+
+        },sumarPrecio(event) {
+			var self = this;
+            self.paramCoti.TOTAL_NETO= self.paramCoti.PIEZAS * self.paramCoti.PRECIO;
+        },quitarItem(index) {
+			var self = this;
+			self.cotizacion.det_coti.splice(index, 1);
+        },agregarArticulo(event) {
+			var self = this;
+            //self.paramCoti;
+			
+			if(self.cotizacion.det_coti.filter(x =>x.SER_PRE_ID ===self.paramCoti.SER_PRE_ID  && x.SEV_TIPO_ID === self.paramCoti.SEV_TIPO_ID).length>0){
+				return Swal.fire({
+					icon: 'error',
+					title: 'Oops...',
+					text: 'Este tipo de servicio ya fue agregado con anterioridad',
+				});
+			}else if(self.paramCoti.TOTAL_NETO==0){
+				return Swal.fire({
+					icon: 'error',
+					title: 'Oops...',
+					text: 'Faltan datos por ingresar',
+				});
+			};
+			
+
+			let keys ={
+				SER_PRE_ID: self.paramCoti.SER_PRE_ID,
+				SER_PRE_DESC: self.paramCoti.SER_PRE_ID==1?"Lavado a Seco":"Maquina Lavadora",
+				SEV_TIPO_ID: self.paramCoti.SEV_TIPO_ID,
+				SEV_TIPO_DESC: self.paramCoti.SEV_TIPO_ID==1? "Blusa":"Acolchado",
+				DET_CANTIDAD : self.paramCoti.PIEZAS,
+				DEL_PRE_TOT: self.paramCoti.TOTAL_NETO,
+				DEL_PRE_UNI:self.paramCoti.PRECIO,
+				PRENDA_DESCRIPCION: self.paramCoti.PRENDA_DESCRIPCION,
+			};
+
+			self.cotizacion.det_coti.push(keys);
+
+			let totalCantidad = 0;
+			let totalPrecio = 0;
+			for (let i = 0; i < self.cotizacion.det_coti.length; i++) {
+				totalCantidad += parseInt(self.cotizacion.det_coti[i].DET_CANTIDAD);
+				totalPrecio += parseInt(self.cotizacion.det_coti[i].DEL_PRE_TOT);
+			}
+			self.cotizacion.CANTIDAD_PRENDAS = totalCantidad;
+			console.log(totalPrecio);
+			self.cotizacion.PEDIDO_TOTAL = totalPrecio;
+			self.paramCoti={
+				SER_PRE_ID:0,
+				SEV_TIPO_ID:0,
+				PRECIO:0,
+				TOTAL_NETO:0,
+				PIEZAS:0,
+			};
+			console.log(JSON.stringify(self.cotizacion));
+        },preciosCoti(event) {
+			var self = this;
+            if(self.paramCoti.SER_PRE_ID=="" || self.paramCoti.SEV_TIPO_ID==""){
+
+			}else if(self.paramCoti.SER_PRE_ID!="" && self.paramCoti.SEV_TIPO_ID!=""){
+				var requestOptions = {
+					method: 'POST',
+					headers: {"Content-Type":"application/json"},
+					body: JSON.stringify(self.paramCoti),
+				};
+						
+				return fetch(apiEndpoint + 'getTarifa',requestOptions).then(resp =>
+					resp.json()
+				).then(res => {
+					if (res.data){
+						self.paramCoti = res.data;
+					}else if(res.error){
+						throw res.error;
+					}	
+				}).catch(function (error) {
+					self.alerta({type:'GET',message:error});
+					return false;
+				});
+
+			};
         },
 		cuentaLink(id){
+			window.location.href='cuenta.html?id_persona='+id;
+			
+		},cotiLink(id){
 			window.location.href='cuenta.html?id_persona='+id;
 			
 		},alerta({type='GET',message}){
@@ -94,7 +268,8 @@ var vm = new Vue({
 			let uri = window.location.search.substring(1); 
 			let params = new URLSearchParams(uri);
 			self.cuenta.id_persona= params.get("id_persona");
-
+			
+			
 			var requestOptions = {
 				method: 'POST',
 				headers: {"Content-Type":"application/json"},
@@ -119,8 +294,157 @@ var vm = new Vue({
 				self.alerta({type:'GET',message:error});
 				return false;
 			});
+		},createCotizacion: function(){
+			var self = this;
+			let uri = window.location.search.substring(1); 
+			let params = new URLSearchParams(uri);
+			//self.cuenta.id_persona= params.get("id_persona");
+			if(self.cotizacion.info_cliente.NOMBRE==""){
+				return Swal.fire({
+					icon: 'error',
+					title: 'Oops...',
+					text: 'Revise el formulario, informacion incompleta',
+				});
+			}
+
+			var requestOptions = {
+				method: 'POST',
+				headers: {"Content-Type":"application/json"},
+				//headers: Headers.form,
+				body: JSON.stringify(self.cotizacion),
+				redirect: 'follow'
+			};
+                     
+			return fetch(apiEndpoint + 'createCotizacion',requestOptions).then(resp =>
+				resp.json()
+			).then(res => {
+				if (res.data){
+					Swal.fire({
+						icon: 'success',
+						title: 'Correcto',
+						text: res.data,
+					});
+				}else if(res.error){
+					throw res.error;
+				}	
+			}).catch(function (error) {
+				self.alerta({type:'GET',message:error});
+				return false;
+			});
+		},createCliente: function(){
+			var self = this;
+
+			let uri = window.location.search.substring(1); 
+			let params = new URLSearchParams(uri);
+			//self.cuenta.id_persona= params.get("id_persona");
+
+
+			if(!self.nitIsValid(self.cliente.nit)){
+				self.alerta({type:'GET',message:"NIT invalido ante SAT."});
+				return false;
+			};
+
+			var requestOptions = {
+				method: 'POST',
+				headers: {"Content-Type":"application/json"},
+				//headers: Headers.form,
+				body: JSON.stringify(self.cliente),
+				redirect: 'follow'
+			};
+                     
+			return fetch(apiEndpoint + 'createCliente',requestOptions).then(resp =>
+				resp.json()
+			).then(res => {
+				if (res.data){
+					Swal.fire({
+						icon: 'success',
+						title: 'Correcto',
+						text: res.data,
+					});
+				}else if(res.error){
+					throw res.error;
+				}	
+			}).catch(function (error) {
+				self.alerta({type:'GET',message:error});
+				return false;
+			});
+		},getClienteById: function(){
+			
+			
+			var self = this;
+			if(!self.noConsultarIDCoti){
+				fetch(apiEndpoint + 'getSecuenciaCotizacion').then(resp =>
+					resp.json()
+				).then(res => {
+					if (res.data){
+						self.cotizacion.COTIZACION_ID = res.data.COTIZACION_ID;
+						self.noConsultarIDCoti=true;
+					}else if(res.error){
+						throw res.error;
+					}	
+				}).catch(function (error) {
+					self.alerta({type:'GET',message:error});
+					
+				});
+			}
+
+			let uri = window.location.search.substring(1); 
+			let params = new URLSearchParams(uri);
+			//self.cuenta.id_persona= params.get("id_persona");
+
+			var requestOptions = {
+				method: 'POST',
+				headers: {"Content-Type":"application/json"},
+				//headers: Headers.form,
+				body: JSON.stringify({nit: self.cotizacion.info_cliente.NIT}),
+				redirect: 'follow'
+			};
+                     
+			return fetch(apiEndpoint + 'getClienteById',requestOptions).then(resp =>
+				resp.json()
+			).then(res => {
+				if (res.data){
+					document.getElementById('nitCoti').disabled = true;
+					self.cotizacion.info_cliente = res.data;
+					
+
+				}else if(res.error){
+					throw res.error;
+				}	
+			}).catch(function (error) {
+				self.alerta({type:'GET',message:error});
+				return false;
+			});
+		},listCotizaciones: function(){
+			var self = this;
+      
+			return fetch(apiEndpoint + 'listCotizaciones').then(resp =>
+				resp.json()
+			).then(res => {
+				if (res.data){
+					self.listaCoti=res.data;
+				}else if(res.error){
+					throw res.error;
+				}	
+			}).catch(function (error) {
+				self.alerta({type:'GET',message:error});
+				return false;
+			});
+		},getCotizacion: function(id){
+			var self = this;
+			return fetch(apiEndpoint + 'getCotizacion?cotizacion_id='+id).then(resp =>
+				resp.json()
+			).then(res => {
+				if (res.data){
+					self.info_coti=res.data;
+				}else if(res.error){
+					throw res.error;
+				}	
+			}).catch(function (error) {
+				self.alerta({type:'GET',message:error});
+				return false;
+			});
 		},
-		
 		getData: function(){
 			var self = this;
 			var raw = 'filtros=' + JSON.stringify(self.filtro);
