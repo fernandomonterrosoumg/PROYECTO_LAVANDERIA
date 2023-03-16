@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" crossorigin="anonymous">
     <div id="app">
 
         <div id="loading" class="loading loading--plane" style="display:none" title="Loading">
@@ -50,44 +50,7 @@
                 </form>
               </div>
 
-            <br>
-            <br>
-            <div id="toolbar">
-                    <select @change="onChangeTipo($event)" class="form-control">
-                        <option value="">Seleccionar</option>
-                            <option value="1">Personas</option>
-                    </select>
-            </div>
             
-            <table id="table"  class="table"
-                         data-toggle="table"
-                         data-search="true"
-                         data-filter-control="true" 
-                         data-show-export="true"
-                         data-click-to-select="true"
-                         data-toolbar="#toolbar">
-                <thead>
-                    <tr>
-                        <th data-field="state" >ID_PERSONA</th>
-                        <th data-field="prenom" data-filter-control="input" data-sortable="true">NOMBRE</th>
-                        <th data-field="date" data-filter-control="select" data-sortable="true">APELLIDO</th>
-                        <th data-field="examen" data-filter-control="select" data-sortable="true">IDENTIFICACION</th>
-                        <th data-field="note" data-sortable="true">NUM_CUENTAS</th>
-                        <th data-field="note" data-sortable="true">OPCIONES</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="persona in personas">
-                        
-                        <td>{{persona.ID_PERSONA}}</td>
-                        <td>{{persona.NOMBRE}}</td>
-                        <td>{{persona.APELLIDO}}</td>
-                        <td>{{persona.IDENTIFICACION}}</td>
-                        <td>{{persona.NUM_CUENTAS}}</td>
-                        <td><button class="btn btn-primary">Crear cuenta</button></td>
-                    </tr>
-                </tbody>
-            </table>
             </div>
     </div>
 </head>

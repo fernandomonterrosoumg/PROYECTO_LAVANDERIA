@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <div id="app">
+
+        <div id="loading" class="loading loading--plane" style="display:none" title="Loading">
+            cargando...
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 113.5 104">
+                <path d="M97.7 41.5c16.3 0 16.3 21-.2 21H66.7l-26 38H29.2l14.1-38h-23l-7.8 10h-9L8.2 52 3.5 31.5h9l7.8 10h23.1l-14.1-38h11.4l26 38h31z" fill="none" stroke="#231F20" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke="#000" stroke-width="4" />
+            </svg>
+        </div>
+
+        <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+            <symbol id="check" viewBox="0 0 16 16">
+              <title>Check</title>
+              <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
+            </symbol>
+          </svg>
+          
+          <div class="container">
+            <form v-on:submit.prevent="createCotizacion">
+              <h2>Formuario de cotización #{{cotizacion.COTIZACION_ID}}</h2>
+              <div class="row">
+                
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <hr>
+                    <h4>Informacion del cliente</h4>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="last">NIT</label>
+                    <input type="text" class="form-control" v-model="cotizacion.info_cliente.NIT" placeholder="" id="nitCoti" required>
+                    <br>
+                    <button type="button" v-on:click="getClienteById" class="btn btn-primary">Buscar</button>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="last">Nombre</label>
+                    <input type="text" class="form-control" v-model="cotizacion.info_cliente.NOMBRE" placeholder="" id="last" disabled>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="last">Apellido</label>
+                    <input type="text" class="form-control" v-model="cotizacion.info_cliente.APELLIDO" placeholder="" id="last" disabled>
+                  </div>
+                </div>
+                <hr>
+
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <hr>
+                    <h4>Informacion cotizacion</h4>
+                  </div>
+                </div>
+                
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="last">Fecha de devolución</label>
+                    <input type="date" class="form-control" v-model="cotizacion.fecha_devolucion" placeholder="" id="last" required>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="last">Total de prendas</label>
+                    <input type="text" class="form-control" v-model="cotizacion.CANTIDAD_PRENDAS" placeholder="" id="last" disabled>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="last">Precio total</label>
+                    <input type="text" class="form-control" v-model="cotizacion.PEDIDO_TOTAL" placeholder="" id="last" disabled>
+                  </div>
+                </div>
+                <hr>
+                
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <hr>
+                    <h4>Informacion de productos</h4>
+                    
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="last">Tipo de servicio</label>
+                    <select class="form-control" @change="preciosCoti($event)" v-model="paramCoti.SER_PRE_ID">
+                          <option value="1">Lavado a Seco</option>
+                          <option value="2">Maquina Lavadora</option>
+                  </select>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="last">Tipo de prenda</label>
+                    <select @change="preciosCoti($event)" class="form-control"  v-model="paramCoti.SEV_TIPO_ID">
+                          <option value="1">Blusa</option>
+                          <option value="2">Acolchado</option>
+                  </select>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="last">Tarifa</label>
+                    <input  type="text" class="form-control" v-model="paramCoti.PRECIO" placeholder="" id="last" disabled>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="last">Numero de piezas</label>
+                    <input type="number" class="form-control" @keyup="sumarPrecio($event)" v-model="paramCoti.PIEZAS" placeholder="" id="last">
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="last">Total</label>
+                    <input type="text" class="form-control" v-model="paramCoti.TOTAL_NETO" placeholder="" id="last" disabled>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label for="last">Descripcion de la prenda</label>
+                    <textarea name="" id=""class="form-control"  v-model="paramCoti.PRENDA_DESCRIPCION" cols="2" rows="2"></textarea>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <button type="button" v-on:click="agregarArticulo" class="btn btn-primary">Agregar</button>
+                  </div>
+                </div>
+                <table id="table"  class="table"
+                         data-toggle="table"
+                         data-search="true"
+                         data-filter-control="true" 
+                         data-show-export="true"
+                         data-click-to-select="true"
+                         data-toolbar="#toolbar">
+                <thead>
+                    <tr>
+                        <th data-field="state" >#</th>
+                        
+                        <th data-field="date" data-filter-control="select" data-sortable="true">DESCRIPCION</th>
+                        <th data-field="date" data-filter-control="select" data-sortable="true">PRENDA DESC.</th>
+                        <th data-field="examen" data-filter-control="select" data-sortable="true">PRECIO UNITARIO</th>
+                        <th data-field="prenom" data-filter-control="input" data-sortable="true">PIEZAS</th>
+                        <th data-field="examen" data-filter-control="select" data-sortable="true">PRECIO TOTAL</th>
+                        <th data-field="examen" data-filter-control="select" data-sortable="true">Opciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(det_coti,index) in cotizacion.det_coti">
+                        
+                        <td>{{index+1}}</td>
+                        
+                        <td>{{det_coti.SER_PRE_DESC}} - {{det_coti.SEV_TIPO_DESC}}</td>
+                        <td>{{det_coti.PRENDA_DESCRIPCION}}</td>
+                        <td>{{det_coti.DEL_PRE_UNI}}</td>
+                        <td>{{det_coti.DET_CANTIDAD}}</td>
+                        <td>{{det_coti.DEL_PRE_TOT}}</td>
+                        <td><button class="btn btn-primary" v-on:click.prevent="quitarItem(index)">Eliminar</button></td>
+                    </tr>
+                </tbody>
+            </table>
+                <!--  col-md-6   -->
+              </div>
+          
+          
+          
+              <button type="submit" class="btn btn-primary">Guardar</button>
+            </form>
+          </div>
+
+         <div id="footerProgram"></div>
+          
+
+       
+    </div>
+</head>
+    
+</body>
+</html>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="function.js"></script>
+<script>
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'menu.html', true);
+    xhr.onreadystatechange = function() {
+      if (this.readyState !== 4) return;
+      if (this.status !== 200) return;
+      var menu = document.createElement('div');
+      menu.innerHTML = this.responseText;
+      document.body.insertBefore(menu, document.body.firstChild);
+    };
+    xhr.send();
+    var xhr2 = new XMLHttpRequest();
+    xhr2.open('GET', 'footer.html', true);
+    xhr2.onreadystatechange = function() {
+      if (this.readyState !== 4) return;
+      if (this.status !== 200) return;
+      var footer = document.getElementById('footerProgram');
+      footer.innerHTML = this.responseText;
+      //document.body.insertBefore(footer);
+    };
+    xhr2.send();
+  </script>
+
+<style>
+    .bd-placeholder-img {
+      font-size: 1.125rem;
+      text-anchor: middle;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      user-select: none;
+    }
+
+    @media (min-width: 768px) {
+      .bd-placeholder-img-lg {
+        font-size: 3.5rem;
+      }
+    }
+
+    .b-example-divider {
+      height: 3rem;
+      background-color: rgba(0, 0, 0, .1);
+      border: solid rgba(0, 0, 0, .15);
+      border-width: 1px 0;
+      box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+    }
+
+    .b-example-vr {
+      flex-shrink: 0;
+      width: 1.5rem;
+      height: 100vh;
+    }
+
+    .bi {
+      vertical-align: -.125em;
+      fill: currentColor;
+    }
+
+    .nav-scroller {
+      position: relative;
+      z-index: 2;
+      height: 2.75rem;
+      overflow-y: hidden;
+    }
+
+    .nav-scroller .nav {
+      display: flex;
+      flex-wrap: nowrap;
+      padding-bottom: 1rem;
+      margin-top: -1px;
+      overflow-x: auto;
+      text-align: center;
+      white-space: nowrap;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    body {
+  background-image: linear-gradient(180deg, #eee, #fff 100px, #fff);
+}
+
+.container {
+  max-width: 960px;
+}
+
+.pricing-header {
+  max-width: 700px;
+}
+  </style>
+  
