@@ -1,0 +1,19 @@
+INSERT INTO CLIENTE (
+    APELLIDO,
+    NOMBRE,
+    CALLE,
+    APARTAMENTO,
+    PISO,
+    BARRIO,
+    TELEFONO,
+    NIT
+) VALUES (
+    :APELLIDO,
+    :NOMBRE,
+    :CALLE,
+    :APARTAMENTO,
+    :PISO,
+    :BARRIO,
+    :TELEFONO,
+    :NIT
+)
