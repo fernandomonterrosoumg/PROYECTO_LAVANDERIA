@@ -9,7 +9,6 @@ app.set("port",3000)
 
 //CARGAR RUTAS
 var generalRoutes = require('./v1/routes/general/generalRoutes');
-var webpageRoutes = require('./v1/routes/webpage/webpageRoutes');
 
 //MIDDLEWARES
 app.use(cors())
@@ -30,7 +29,6 @@ app.use((err,req, res, next) => {
 
 //RUTAS
 app.use('/api/v1/general',generalRoutes);
-app.use('/api/v1/webpage',webpageRoutes);
 
 app.use((err, req, res, next) => {
 	// Envía una respuesta de error al cliente

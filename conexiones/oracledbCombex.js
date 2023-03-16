@@ -93,14 +93,15 @@ function readCommand(ruta) {
 };
 
 
-async function queryObject({ ruta, bindParams = {}, options = {} }) {
+async function queryObject({ ruta,query, bindParams = {}, options = {} }) {
     const defaultOptionsBd = {
         outFormat: oracledb.OBJECT,
+        autoCommit: true,
         timeout: 20000,
     };
 
     const mergedOptions = { ...defaultOptionsBd, ...options };
-    var sql = await readCommand(ruta);
+    var sql = ruta ? await readCommand(ruta):query;
     console.log(mergedOptions);
 
     return queryArray(sql, bindParams, mergedOptions);
