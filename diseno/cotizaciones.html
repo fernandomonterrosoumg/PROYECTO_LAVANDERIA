@@ -51,7 +51,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="cotizacion in listaCoti">
+                    <tr v-bind:style=" cotizacion.DIAS_TOTAL>=90 ? 'background:red;' : '' " v-for="cotizacion in listaCoti">
                         
                         <td>{{cotizacion.COTIZACION_ID}}</td>
                         <td>{{cotizacion.NOMBRE}} {{cotizacion.APELLIDO}}</td>
@@ -59,8 +59,8 @@
                         <td>{{cotizacion.COTIZACION_FECHA}}</td>
                         <td>{{cotizacion.ESTADO}}</td>
                         <td>{{cotizacion.FECHA_DEVOLUCION}}</td>
-                        <td>{{cotizacion.DIAS_TOTAL}}</td>
-                        <td>{{cotizacion.DIAS_ENTREGA}}</td>
+                        <td>{{cotizacion.DIAS_ENTREGA<0 ? '': cotizacion.DIAS_TOTAL}}</td>
+                        <td>{{cotizacion.DIAS_ENTREGA<0 ? '': cotizacion.DIAS_ENTREGA }}</td>
                         <td><button class="btn btn-primary" v-on:click.prevent="cotiLink(cotizacion.COTIZACION_ID)">Ver detalle</button></td>
                     </tr>
                 </tbody>

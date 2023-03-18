@@ -63,6 +63,26 @@ function listCotizaciones(req, res, next) {
         });
 }
 
+function repoMensualServicio(req, res, next) {
+    conexion.queryObject({ ruta: 'v1/src/querys/general/sel_repo_servicios.sql' })
+        .then(function (result) {
+            return res.status(200).send({ data: result.rows });
+        })
+        .catch(function (err) {
+            return next(err.toString());
+        });
+}
+
+function repoCompras(req, res, next) {
+    conexion.queryObject({ query:"SELECT *FROM compra"})
+        .then(function (result) {
+            return res.status(200).send({ data: result.rows });
+        })
+        .catch(function (err) {
+            return next(err.toString());
+        });
+}
+
 function getCotizacion(req, res, next) {
     console.log(req.query);
     conexion.queryObject({ ruta: 'v1/src/querys/general/sel_cotizacion_by_id.sql',bindParams:{cotizacion_id:req.query.cotizacion_id} })
@@ -76,6 +96,56 @@ function getCotizacion(req, res, next) {
                 return next(err.toString());
             });
             //return res.status(200).send({ data: result.rows });
+        })
+        .catch(function (err) {
+            return next(err.toString());
+        });
+}
+
+function getCotizacionFac(req, res, next) {
+    console.log(req.query);
+    conexion.queryObject({ ruta: 'v1/src/querys/general/sel_cotizacion_by_idfac.sql',bindParams:{cotizacion_id:req.query.cotizacion_id} })
+        .then(function (result) {
+
+            conexion.queryObject({ query:"SELECT * FROM CLIENTE WHERE ID_CLIENTE=:ID_CLIENTE", bindParams:{ID_CLIENTE:req.query.ID_CLIENTE}})
+            .then(function (result2) {
+                
+                conexion.queryObject({ query:"SELECT * FROM FACTURA WHERE cotizacion_id=:cotizacion_id", bindParams:{cotizacion_id:req.query.cotizacion_id}})
+                .then(function (result3) {
+                    return res.status(200).send({ data: {cliente: result2.rows[0], cotizacion:result.rows,factura: result3.rows[0]} });
+                })
+                .catch(function (err) {
+                    return next(err.toString());
+                });
+                    
+                
+            })
+            .catch(function (err) {
+                return next(err.toString());
+            });
+            //return res.status(200).send({ data: result.rows });
+        })
+        .catch(function (err) {
+            return next(err.toString());
+        });
+}
+
+async function facturar(req, res, next) {
+
+    await conexion.queryObject({ query: 'SELECT * FROM FACTURA WHERE COTIZACION_ID=:cotizacion_id',bindParams:{cotizacion_id:req.query.cotizacion_id} })
+        .then(function (result) {
+            if(result.rows.length>0){
+                return res.status(200).send({ data: "Factura ya existente " });
+            }
+            
+        })
+        .catch(function (err) {
+            return next(err.toString());
+        });
+
+    await conexion.queryObject({ query: 'CALL P_GENERAFACTURA(:cotizacion_id)',bindParams:{cotizacion_id:req.query.cotizacion_id} })
+        .then(function (result) {
+            return res.status(200).send({ data: "Factura generada correctamente." });
         })
         .catch(function (err) {
             return next(err.toString());
@@ -173,4 +243,8 @@ module.exports = {
     createCotizacion,
     listCotizaciones,
     getCotizacion,
+    getCotizacionFac,
+    facturar,
+    repoMensualServicio,
+    repoCompras,
 }

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Factura</title>
+    <meta charset="UTF-8">
+    <style>
+        /* Estilos CSS para la factura */
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            line-height: 1.5;
+            margin: 0;
+            padding: 0;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th,
+        td {
+            padding: 5px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        h1,
+        h2,
+        h3 {
+            margin: 0;
+            padding: 0;
+        }
+
+        #header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            background-color: #f2f2f2;
+        }
+
+        #header img {
+            height: 50px;
+        }
+
+        #info {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+        }
+
+        #info div {
+            flex: 1;
+        }
+
+        #info div:last-child {
+            text-align: right;
+        }
+
+        #footer {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            font-size: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+    <div id="header">
+        <img src="https://www.zarla.com/images/zarla-lava-todo-1x1-2400x2400-20210603-4ypjktbf4k3648kjqxq3.png?crop=1:1,smart&width=250&dpr=2" width="60" height="60" alt="">
+        <h1>FACTURA</h1>
+    </div>
+    <div id="info">
+        <div>
+            <p><strong>Nombre del cliente: </strong>{{factura.cliente.NOMBRE}} {{factura.cliente.APELLIDO}}</p>
+            <p><strong>Dirección:</strong> {{factura.cliente.CALLE}}, {{factura.cliente.BARRIO}}</p>
+            <p><strong>NIT:</strong> {{factura.cliente.NIT}}</p>
+
+        </div>
+        <div>
+            <p><strong>No. de factura:</strong> {{factura.factura.FACTURA_ID}}</p>
+            <p><strong>Fecha:</strong> {{factura.factura.FACTURA_FECHA}}</p>
+        </div>
+    </div>
+    <table border="1">
+        <thead>
+            <tr>
+                <th data-field="state" >#</th>
+                        
+                        <th data-field="date" data-filter-control="select" data-sortable="true">DESCRIPCION</th>
+                        <th data-field="date" data-filter-control="select" data-sortable="true">PRENDA DESC.</th>
+                        <th data-field="examen" data-filter-control="select" data-sortable="true">PRECIO UNITARIO</th>
+                        <th data-field="prenom" data-filter-control="input" data-sortable="true">PIEZAS</th>
+                        <th data-field="prenom" data-filter-control="input" data-sortable="true">DESCUENTO</th>
+                        <th data-field="examen" data-filter-control="select" data-sortable="true">PRECIO TOTAL</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="(det_coti,index) in factura.cotizacion">
+                        
+                <td>{{index+1}}</td>
+                
+                <td>{{det_coti.DESCRIPCION}} - {{det_coti.PRENDA}}</td>
+                <td>{{det_coti.PRENDA_DESCRIPCION}}</td>
+                <td>Q.{{det_coti.DEL_PRE_UNI}}</td>
+                <td>Q.{{det_coti.DET_CANTIDAD}}</td>
+                <td>Q.0.00</td>
+                <td>Q.{{det_coti.DEL_PRE_TOT}}</td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="6">Subtotal</td>
+                <td colspan="3"><strong>Q.{{factura.factura.PEDIDO_TOTAL}}</strong></td>
+            </tr>
+        </tfoot>
+    </table>
+    <div>
+        <p><strong>Firma FEL:</strong> {{factura.factura.FIRMA_FEL}}</p>
+        <p><strong>Fecha:</strong>Sujeto a pagos trimestrales.</p>
+    </div>
+    <button id="myButton" v-on:click="getFactura"></button>
+</div>
+</body>
+</html>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="function.js"></script>
+<script>
+    $(document).ready(function() {
+  
+  
+  // Manually trigger the click event
+  $("#myButton").click();
+});
+</script>
