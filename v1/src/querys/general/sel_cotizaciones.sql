@@ -6,7 +6,7 @@ SELECT
     cotizacion.cotizacion_fecha,
     cotizacion.estado,
     cotizacion.fecha_devolucion,
-    FLOOR(TRUNC(SYSDATE)-COTIZACION_FECHA) DIAS_TOTAL,
+    FLOOR(TRUNC(SYSDATE+1)-COTIZACION_FECHA) DIAS_TOTAL,
     FLOOR(FECHA_DEVOLUCION-TRUNC(SYSDATE)) DIAS_ENTREGA
 FROM
          cotizacion

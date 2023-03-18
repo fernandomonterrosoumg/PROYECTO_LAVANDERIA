@@ -13,6 +13,10 @@ api.get('/getSecuenciaCotizacion' ,generalController.getSecuenciaCotizacion);
 api.post('/createCotizacion' ,generalController.createCotizacion);
 api.get('/listCotizaciones' ,generalController.listCotizaciones);
 api.get('/getCotizacion' ,generalController.getCotizacion);
+api.get('/getCotizacionFac' ,generalController.getCotizacionFac);
+api.get('/facturar' ,generalController.facturar);
+api.get('/repoMensualServicio' ,generalController.repoMensualServicio);
+api.get('/repoCompras' ,generalController.repoCompras);
 
 //EXPORTACION DE RUTAS
 module.exports = api;
