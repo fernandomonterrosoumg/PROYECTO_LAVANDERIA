@@ -13,10 +13,6 @@
 | Partes interesadas | Departamento de ventas de la empresa de lavandería y dueño del negocio. |
 | Usuarios | Empleados |
 
-
-
-# 2. Analisis
-
 **Tecnologías**
 Debido a los ítems solicitados, el sistema debe de ser web, por lo cual se examina que las tecnologías adecuadas para realizar este sistema son: Node.js, Bootstrap y Vue.js como las principales tecnologías de desarrollo. A continuación, le presento algunas razones por las que creo que estas tecnologías serían ideales para su sitio web.
 
@@ -36,6 +32,9 @@ El cliente posee una infraestructura con las siguientes características:
  Diagrama de su infraestuctura 
  ![enter image description here](https://upload.wikimedia.org/wikipedia/commons/5/53/Netzwerktopologie_Stern.png)
 Las tecnologías elegidas fueron elegidas con base en la infraestructura para la integración y despliegue correcto de la misma.
+
+
+# 2. Analisis
 
 **Requerimientos**
 ***Requerimientos no funcionables:***
@@ -65,29 +64,79 @@ Las tecnologías elegidas fueron elegidas con base en la infraestructura para la
  4. El cálculo de los cobros debe ser validado en sistema.
  5. Si existe alguna inconsistencia en los datos, se debe de mostrar él originen del error para mantener la confianza de los datos.
 
-**Analisis de procesos**
-Con base a los requerimientos podemos establecer el análisis de como lograr los puntos solicitados por el cliente, establecer los procesos a implementar en el sistema, definición de soluciones, definir aspectos importantes, definir la complejidad de cada proceso.
 
+**Casos de uso**
+![enter image description here](https://github.com/fernandomonterrosoumg/PROYECTO_LAVANDERIA/blob/main/media/caso%20de%20uso%20general.jpeg?raw=true)
+
+![enter image description here](https://github.com/fernandomonterrosoumg/PROYECTO_LAVANDERIA/blob/main/media/caso%20coti.jpeg?raw=true)
+
+![enter image description here](https://github.com/fernandomonterrosoumg/PROYECTO_LAVANDERIA/blob/main/media/uso%20factu.jpeg?raw=true)
+
+
+![enter image description here](https://github.com/fernandomonterrosoumg/PROYECTO_LAVANDERIA/blob/main/media/uso%20cotizacion.jpeg?raw=true)
+
+![enter image description here](https://github.com/fernandomonterrosoumg/PROYECTO_LAVANDERIA/blob/main/media/uso%20cliente.jpeg?raw=true)
+
+
+**Diagrama UML entidad-relación**
+![enter image description here](https://github.com/fernandomonterrosoumg/PROYECTO_LAVANDERIA/blob/main/media/diagram%20bd.jpg?raw=true)
+
+**Diagrama UML de base de datos**
+![enter image description here](https://github.com/fernandomonterrosoumg/PROYECTO_LAVANDERIA/blob/main/media/ORA_LAVANDERIA.jpg?raw=true)
 # 4. kanban
-	Se implemento en jira.
-	Link de seguimiento. [enter link description here](https://aseguramientodesoft-2022.atlassian.net/jira/software/projects/SL/boards/2/roadmap)
+Se implemento en jira.
+Link de seguimiento. 
+[jira tablero kanban](https://aseguramientodesoft-2022.atlassian.net/jira/software/projects/SL/boards/2/roadmap)
+1.  Mejora de la eficiencia: Kanban ayuda a optimizar el flujo de trabajo en el proyecto, permitiendo que los miembros del equipo de proyecto trabajen de manera más eficiente y reduciendo los tiempos de espera.
+    
+2.  Reducción de los costos: Al mejorar la eficiencia, el proyecto de análisis de sistemas de lavandería puede ser completado en un menor tiempo y con menos recursos, lo que se traduce en una reducción de los costos.
+    
+3.  Mejora de la calidad: La metodología Kanban se centra en la calidad del trabajo y en la satisfacción del cliente, por lo que ayuda a asegurar que el proyecto se complete de manera óptima y satisfaga las necesidades del cliente.
+    
+4.  Transparencia y colaboración: Kanban promueve la transparencia en el proceso de trabajo, lo que permite a todos los miembros del equipo tener acceso a la información relevante del proyecto y fomenta la colaboración entre los diferentes departamentos.
+
 
 Tablero 
 ![enter image description here](https://github.com/fernandomonterrosoumg/PROYECTO_LAVANDERIA/blob/main/media/jira%20kan22.png?raw=true)
 
 # 5. Documentar las pruebas
 
+| Fecha | Nota |
+|--|--|
+| 10/03/2023 | Se realizar pruebas de estress de API en ambiente de desarrollo.|
+| 11/03/2023 | Se realizar pruebas de estress de API en ambiente de produccion|
+| 20/03/2023 | Empleados registrar la primera venta en sistema. |
+
+
 # 6. Documentar la implementación
+1. Ejecucion de backend:
+	Requisitos: Instalar nodejs.
+	1.1. Descargar el codigo fuente con sus credenciales el el repositorio.
+	1.2. Ejecutar el comando `npm install`
+	1.3.  Ejecutar el comando `npm run dev`
+
+2. Ejecucion de frontend:
+	Requisitos: Instalar apache.
+	2.1. Descargar el codigo fuente con sus credenciales el el repositorio.
+	2.2. Levantar el servidor apache.
+	
+3. Base de datos.
+	Requisitos: Instalar base de datos de oracle.
+	1.1. Descargar el backup del repositorio.
+	2.2. Cargar backup de base de datos.
+
 
 # 7. Otros
 **Diagrama de GANTT**
 El diagrama de grant fue generador en la pagina de monday.com.
-El link del seguimiento es el siguiente https://ninguna61774.monday.com/boards/4174702899/
+El link del seguimiento en linea es el siguiente https://ninguna61774.monday.com/boards/4174702899/
+El diagrama de grant en formato excel se puede obtener en [link de descarga](https://github.com/fernandomonterrosoumg/PROYECTO_LAVANDERIA/blob/main/media/grantt.xlsx)
 Vista de diagrama de GANTT
 ![enter image description here](https://github.com/fernandomonterrosoumg/PROYECTO_LAVANDERIA/blob/main/media/grant%20vista.png?raw=true)
 
 Tabla de tareas registradas en diagrama de GANTT
 ![enter image description here](https://github.com/fernandomonterrosoumg/PROYECTO_LAVANDERIA/blob/main/media/tareas%20grant.png?raw=true)
+
 
 **Manual de usuario**
 En la pantalla de clientes tenemos múltiples opciones de ingreso de información para que el cliente ingrese, sus apellidos, nombre, dirección, teléfono y nit que es validado antes de continuar con el proceso. 
