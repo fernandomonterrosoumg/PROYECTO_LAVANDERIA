@@ -1,5 +1,5 @@
 
-# Documentación de requerimiento
+# 1. Documentación de requerimiento
 **Acta de proyecto**
 | Tema | Descripción |
 |--|--|
@@ -15,7 +15,7 @@
 
 
 
-# Analisis
+# 2. Analisis
 
 **Tecnologías**
 Debido a los ítems solicitados, el sistema debe de ser web, por lo cual se examina que las tecnologías adecuadas para realizar este sistema son: Node.js, Bootstrap y Vue.js como las principales tecnologías de desarrollo. A continuación, le presento algunas razones por las que creo que estas tecnologías serían ideales para su sitio web.
@@ -65,27 +65,41 @@ Las tecnologías elegidas fueron elegidas con base en la infraestructura para la
  4. El cálculo de los cobros debe ser validado en sistema.
  5. Si existe alguna inconsistencia en los datos, se debe de mostrar él originen del error para mantener la confianza de los datos.
 
-	
-
-# Análisis
-**Restricciones**
-Con base a los requerimientos podemos establecer el análisis de como lograr los puntos solicitados por el cliente, establecer los procesos a implementar en el sistema, definición de soluciones, definir aspectos importantes, definir la complejidad de cada proceso y estimar tiempos sobre cada acción a realizar.
-
 **Analisis de procesos**
-Todos los procesos se desarrollarán utilizando como referencia el documento de especificaciones funcionales entregados.
+Con base a los requerimientos podemos establecer el análisis de como lograr los puntos solicitados por el cliente, establecer los procesos a implementar en el sistema, definición de soluciones, definir aspectos importantes, definir la complejidad de cada proceso.
 
+# 4. kanban
+	Se implemento en jira.
+	Link de seguimiento. [enter link description here](https://aseguramientodesoft-2022.atlassian.net/jira/software/projects/SL/boards/2/roadmap)
 
-# 7. Manual de usuario
+Tablero 
+![enter image description here](https://github.com/fernandomonterrosoumg/PROYECTO_LAVANDERIA/blob/main/media/jira%20kan22.png?raw=true)
+
+# 5. Documentar las pruebas
+
+# 6. Documentar la implementación
+
+# 7. Otros
+**Diagrama de GANTT**
+El diagrama de grant fue generador en la pagina de monday.com.
+El link del seguimiento es el siguiente https://ninguna61774.monday.com/boards/4174702899/
+Vista de diagrama de GANTT
+![enter image description here](https://github.com/fernandomonterrosoumg/PROYECTO_LAVANDERIA/blob/main/media/grant%20vista.png?raw=true)
+
+Tabla de tareas registradas en diagrama de GANTT
+![enter image description here](https://github.com/fernandomonterrosoumg/PROYECTO_LAVANDERIA/blob/main/media/tareas%20grant.png?raw=true)
+
+**Manual de usuario**
 En la pantalla de clientes tenemos múltiples opciones de ingreso de información para que el cliente ingrese, sus apellidos, nombre, dirección, teléfono y nit que es validado antes de continuar con el proceso. 
 
 ![enter image description here](https://raw.githubusercontent.com/fernandomonterrosoumg/PROYECTO_LAVANDERIA/main/media/formu_cliente.png)
 
-# Ingreso datos cliente y información de servicios
+**Ingreso datos cliente y información de servicios**
 En esta sección se ingresa y se valida los datos, fechas, precios y tipos de servicios solicitados por el cliente.
 
 ![enter image description here](https://raw.githubusercontent.com/fernandomonterrosoumg/PROYECTO_LAVANDERIA/main/media/pagina_coti.png)
 
-# Formulario de Cotización
+**Formulario de Cotización**
 En la parte del formulario de cotización es donde se interactúa con el cliente con datos personales, identificación tributaria y la información de la cotización de los servicios a adquirir siendo los siguientes:
 
 1. Pantalla clientes.
@@ -99,13 +113,13 @@ D. Guarda la cotizacion
 ![enter image description here](https://raw.githubusercontent.com/fernandomonterrosoumg/PROYECTO_LAVANDERIA/main/media/coti_cliente.png)
 
 
-## Listado de Cotizaciones
+** Listado de Cotizaciones**
 En esta sección es donde encontramos el historial de cotizaciones realizadas a diferentes clientes. Iniciando con el ID, nombre, fecha, estado, fecha devolución, días restantes de entrega y opciones como se muestra a continuación:
 
 ![enter image description here](https://raw.githubusercontent.com/fernandomonterrosoumg/PROYECTO_LAVANDERIA/main/media/listado_cotis.png)
 
 
-## Modelo de Factura 
+**Modelo de Factura **
 En esta sección se visualiza la factura con el nombre del cliente, dirección Nit, correlativo de factura, fecha y detalle de los servicios y precios adquiridos.
 
 También en esta sección, se muestra la firma FEL y términos y condiciones. 
