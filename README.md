@@ -122,8 +122,9 @@ Tablero
 	
 3. Base de datos.
 	Requisitos: Instalar base de datos de oracle.
-	1.1. Descargar el backup del repositorio.
-	2.2. Cargar backup de base de datos.
+	1.1. Descargar el backup del repositorio llamado LAVANDERIA_DB.DMP.
+	2.2. Cargar backup de base de datos desde la terminar de SQL Plus con el comando "imp LAVANDERIA_DB.DMP".
+	3.3. Seguir la secuencia de opciones que reflejera consola.
 
 
 # 7. Otros
